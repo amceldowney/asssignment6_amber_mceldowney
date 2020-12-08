@@ -1,0 +1,54 @@
+---
+title: "Mono Lake Levels, Key Policy Actions, and Critical Water Levels"
+author: "Amber McEldowney"
+date: "12/8/2020"
+output: html_document
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+library(tidyverse)
+library(here)
+library(grid)
+library(gridExtra)
+library(janitor)
+library(ggplot2)
+```
+
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+#read in data
+mono_lake_levels <- read_csv(here("data", "mono_lake_annual_levels.csv"), skip=5)
+mono_lake_levels_clean <- clean_names(mono_lake_levels)
+```
+
+```{r fig.height=6, fig.width=8.4}
+#Create Visualization
+mono_lake_levels_clean %>% 
+  ggplot(aes(y=lake_level_feet_above_sea_level, x=year)) +
+  geom_line(color = "blue") + annotate("text", x=1860,y=6378, label="Land bridges emerge") +
+  annotate("text", x=1860,y=6361, label="Salinity of 120 g/L") +
+  annotate("text", x=1860,y=6351, label="Salinity of 150 g/L") +
+  geom_line() + annotate("point", x=1981, y=6372, color="blue") +
+    geom_line() + annotate("point", x=1984, y=6380, color="blue") +
+     geom_line() + annotate("point", x=1998, y=6384.3, color="blue") +
+ geom_line() + annotate("point", x=1994, y= 6374.6, color="blue") +
+  annotate("text", x=1970, y=6371, label="State Natural Reserve Created", color="dark grey") +
+    annotate("text", x=1960, y=6382, label="National Forest Scenic Area Created", color="dark grey") +
+  annotate("text", x=1990, y=6386, label="Restoration Orders: 98-05 and 98-07", color="dark grey") +
+   annotate("text", x=2003, y=6373, label="Decision 1631", color="dark grey") +
+  geom_hline(yintercept=6377, color="green", size=.5, legend="salinity") +
+   geom_hline(yintercept=6360, color="blue", size=.5, legend="salinity") +
+     geom_hline(yintercept=6350, color="purple", size=.5, legend="salinity")+
+  scale_x_continuous(breaks=seq(1850,2017,10))+
+  labs(title = "Mono Lake Levels 1850-2017", y = "Lake Level (ft above sea level)", x="Year") +
+  theme_light()
+```
+
+**Figure 1** This figure shows the Mono Lake water levels (ft above sea level) for the years 1850-2017.  4 key policy decisions are indicated by the blue points: Mono Lake Tufa State Natural Reserve was created in 1981 and the Mono Basin National Forest Scenic Area was established in 1984, in 1994 the State Water Board issued Decision 1631 to set a lake level of 6392 in 1998, the State Water Board issued two restoration orders, 98-05 and 98-07, which required DWP to implement a restoration plan for the Mono Basin’s streams and waterfowl habitat.  The horizontal lines indicate critical water levels: at 6,377 feet above sea level land bridges allow land predators to reach island species and major nesting sites, at 6360 ft above sea level a salinity of 120 g/L would begin to affect bird food sources, and at 6350 ft above sea level, a salinity of 150 g/L would have an acute impact.
